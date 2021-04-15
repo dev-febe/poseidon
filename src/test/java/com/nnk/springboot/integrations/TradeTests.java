@@ -1,8 +1,7 @@
-/*
-package com.nnk.springboot;
+package com.nnk.springboot.integrations;
 
 import com.nnk.springboot.domain.Trade;
-import com.nnk.springboot.repositories.TradeRepository;
+import com.nnk.springboot.services.TradeService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,38 +10,36 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TradeTests {
 
-	@Autowired
-	private TradeRepository tradeRepository;
+    @Autowired
+    private TradeService tradeService;
 
-	@Test
-	public void tradeTest() {
-		Trade trade = new Trade("Trade Account", "Type");
+    @Test
+    public void tradeTest() {
+        Trade trade = new Trade("Trade Account", "Type");
 
-		// Save
-		trade = tradeRepository.save(trade);
-		Assert.assertNotNull(trade.getTradeId());
-		Assert.assertTrue(trade.getAccount().equals("Trade Account"));
+        // Save
+        trade = tradeService.save(trade);
+        Assert.assertNotNull(trade.getId());
+        Assert.assertTrue(trade.getAccount().equals("Trade Account"));
 
-		// Update
-		trade.setAccount("Trade Account Update");
-		trade = tradeRepository.save(trade);
-		Assert.assertTrue(trade.getAccount().equals("Trade Account Update"));
+        // Update
+        trade.setAccount("Trade Account Update");
+        trade = tradeService.save(trade);
+        Assert.assertTrue(trade.getAccount().equals("Trade Account Update"));
 
-		// Find
-		List<Trade> listResult = tradeRepository.findAll();
-		Assert.assertTrue(listResult.size() > 0);
+        // Find
+        List<Trade> listResult = tradeService.list();
+        Assert.assertTrue(listResult.size() > 0);
 
-		// Delete
-		Integer id = trade.getTradeId();
-		tradeRepository.delete(trade);
-		Optional<Trade> tradeList = tradeRepository.findById(id);
-		Assert.assertFalse(tradeList.isPresent());
-	}
+        // Delete
+        Integer id = trade.getId();
+        tradeService.delete(id);
+        Trade tradeList = tradeService.find(id);
+        Assert.assertNull(tradeList);
+    }
 }
-*/
