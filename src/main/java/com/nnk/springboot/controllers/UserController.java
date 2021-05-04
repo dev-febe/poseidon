@@ -7,32 +7,44 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Controller for handle User CRUD
+ */
 @Controller
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
+    @Autowired
+    UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    /**
+     * Read the list of all bid
+     */
     @RequestMapping("/user/list")
-    public String home(Model model)
-    {
+    public String showUserList(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "user/list";
     }
 
+    /**
+     * Show the add Bid form
+     */
     @GetMapping("/user/add")
-    public String addUser(User bid) {
+    public String showAddUserForm(@ModelAttribute User bid) {
         return "user/add";
     }
 
+    /**
+     * Add a new Bid to DB
+     */
     @PostMapping("/user/validate")
-    public String validate(@Valid User user, BindingResult result, Model model) {
+    public String submitAddUserForm(@Valid User user, BindingResult result, Model model) {
         //check model validation
         if (!result.hasErrors()) {
             //encode password
@@ -45,17 +57,27 @@ public class UserController {
         return "user/add";
     }
 
+    /**
+     * Show the form for updating an existing Bid
+     */
     @GetMapping("/user/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateUserForm(@PathVariable("id") Integer id, Model model) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         user.setPassword("");
         model.addAttribute("user", user);
         return "user/update";
     }
 
+    /**
+     * Update an existing Bid
+     */
     @PostMapping("/user/update/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @Valid User user,
-                             BindingResult result, Model model) {
+    public String submitUpdateUserForm(
+            @PathVariable("id") Integer id,
+            @Valid User user,
+            BindingResult result,
+            Model model
+    ) {
         if (result.hasErrors()) {
             return "user/update";
         }
@@ -68,6 +90,9 @@ public class UserController {
         return "redirect:/user/list";
     }
 
+    /**
+     * Delete an existing Bid
+     */
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") Integer id, Model model) {
         // check that an element exists otherwise return an exception

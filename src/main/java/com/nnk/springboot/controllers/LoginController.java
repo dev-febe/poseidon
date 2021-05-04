@@ -7,12 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Controller for handle login request
+ */
 @Controller
 @RequestMapping("app")
 public class LoginController {
+    UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    LoginController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("login")
     public ModelAndView login() {
