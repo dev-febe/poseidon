@@ -10,24 +10,40 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Controller for handle Curve CRUD
+ */
 @Controller
 public class CurveController {
-    @Autowired
     CurveService curveService;
 
+    @Autowired
+    CurveController(CurveService curveService) {
+        this.curveService = curveService;
+    }
+
+    /**
+     * Read the list of all curvePoint
+     */
     @RequestMapping("/curvePoint/list")
-    public String home(Model model) {
+    public String showCurvePointList(Model model) {
         model.addAttribute("list", curveService.list());
         return "curvePoint/list";
     }
 
+    /**
+     * Show the add CurvePoint form
+     */
     @GetMapping("/curvePoint/add")
-    public String addBidForm(CurvePoint bid) {
+    public String addCurvePointForm(@ModelAttribute CurvePoint bid) {
         return "curvePoint/add";
     }
 
+    /**
+     * Add a new CurvePoint to DB
+     */
     @PostMapping("/curvePoint/validate")
-    public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
+    public String submitAddCurvePointForm(@Valid CurvePoint curvePoint, BindingResult result) {
         //check model validation
         if (!result.hasErrors()) {
             curveService.save(curvePoint);
@@ -36,20 +52,29 @@ public class CurveController {
         return "curvePoint/add";
     }
 
+    /**
+     * Show the form for updating an existing CurvePoint
+     */
     @GetMapping("/curvePoint/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public String showUpdateCurvePointForm(@PathVariable("id") Integer id, Model model) {
         //check that an id exists
         CurvePoint curvePoint = curveService.find(id);
         if (curvePoint == null)
-            new IllegalArgumentException("Invalid curvePoint Id:" + id);
+            throw new IllegalArgumentException("Invalid curvePoint Id:" + id);
         model.addAttribute("curvePoint", curvePoint);
 
         return "curvePoint/update";
     }
 
+    /**
+     * Update existing CurvePoint
+     */
     @PostMapping("/curvePoint/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
-                            BindingResult result, Model model) {
+    public String submitUpdateCurvePointForm(
+            @PathVariable("id") Integer id,
+            @Valid CurvePoint curvePoint,
+            BindingResult result
+    ) {
         if (!result.hasErrors()) {
             curvePoint.setId(id);
             curveService.save(curvePoint);
@@ -58,11 +83,14 @@ public class CurveController {
         return "curvePoint/update";
     }
 
+    /**
+     * Delete an existing CurvePoint
+     */
     @GetMapping("/curvePoint/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    public String deleteCurvePoint(@PathVariable("id") Integer id) {
         CurvePoint curvePoint = curveService.find(id);
         if (curvePoint == null)
-            new IllegalArgumentException("Invalid bid Id:" + id);
+            throw new IllegalArgumentException("Invalid bid Id:" + id);
         curveService.delete(id);
         return "redirect:/curvePoint/list";
     }
