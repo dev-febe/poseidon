@@ -3,7 +3,7 @@ package com.nnk.springboot.integrations;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.services.BidListService;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,6 @@ public class BidTests {
 
 		// Save
 		bid = bidListService.save(bid);
-		Assert.assertNotNull(bid.getId());
 		Assert.assertEquals(bid.getBidQuantity(), 10d, 10d);
 
 		// Update
@@ -37,7 +36,7 @@ public class BidTests {
 		Assert.assertTrue(listResult.size() > 0);
 
 		// Delete
-		Integer id = bid.getId();
+		int id = bid.getId();
 		bidListService.delete(id);
 		BidList bidList = bidListService.find(id);
 		Assert.assertNull(bidList);

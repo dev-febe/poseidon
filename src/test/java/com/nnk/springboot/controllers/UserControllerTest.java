@@ -1,7 +1,7 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.domain.Rating;
-import com.nnk.springboot.services.RatingService;
+import com.nnk.springboot.domain.User;
+import com.nnk.springboot.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -18,50 +18,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(RatingController.class)
+@WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class RatingControllerTest {
+public class UserControllerTest {
     @MockBean
-    RatingService service;
+    UserService service;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void testShow() throws Exception {
-        mockMvc.perform(get("/rating/list"))
+        mockMvc.perform(get("/user/list"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testShowAddForm() throws Exception {
-        mockMvc.perform(get("/rating/add"))
+        mockMvc.perform(get("/user/add"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testSubmitAddForm() throws Exception {
-        mockMvc.perform(post("/rating/add"))
+        mockMvc.perform(post("/user/add"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testShowUpdateForm() throws Exception {
-        Mockito.when(service.find(1)).thenReturn(new Rating());
-        mockMvc.perform(get("/rating/update/1"))
+        Mockito.when(service.find(1)).thenReturn(new User());
+        mockMvc.perform(get("/user/update/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testSubmitUpdateForm() throws Exception {
-        mockMvc.perform(post("/rating/update/1"))
+        mockMvc.perform(post("/user/update/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testDelete() throws Exception {
-        Mockito.when(service.find(1)).thenReturn(new Rating());
-        mockMvc.perform(get("/rating/delete/1"))
+        Mockito.when(service.find(1)).thenReturn(new User());
+        mockMvc.perform(get("/user/delete/1"))
                 .andExpect(status().is3xxRedirection());
     }
 }

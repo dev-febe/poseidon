@@ -3,7 +3,7 @@ package com.nnk.springboot.integrations;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.services.RatingService;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,13 +24,12 @@ public class RatingTests {
 
         // Save
         rating = ratingService.save(rating);
-        Assert.assertNotNull(rating.getId());
-        Assert.assertTrue(rating.getOrderNumber() == 10);
+        Assert.assertEquals(10, rating.getOrderNumber());
 
         // Update
         rating.setOrderNumber(20);
         rating = ratingService.save(rating);
-        Assert.assertTrue(rating.getOrderNumber() == 20);
+        Assert.assertEquals(20, rating.getOrderNumber());
 
         // Find
         List<Rating> listResult = ratingService.list();

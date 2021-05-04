@@ -3,7 +3,7 @@ package com.nnk.springboot.integrations;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,17 +20,17 @@ public class UserTests {
 
     @Test
     public void userTest() {
-        User user = new User("bationo", "123456@Bonjour", "BATIONO Aristide", "User" );
+        User user = new User("ben", "123456@Bonjour", "Kone Ben Fousseni", "User" );
 
         // Save
         user = userRepository.save(user);
         Assert.assertNotNull(user.getId());
-        Assert.assertTrue(user.getFullname().equals("BATIONO Aristide"));
+        Assert.assertEquals("Kone Ben Fousseni", user.getFullname());
 
         // Update
         user.setFullname("Aristide");
         user = userRepository.save(user);
-        Assert.assertTrue(user.getFullname().equals("Aristide"));
+        Assert.assertEquals("Aristide", user.getFullname());
 
         // Find
         List<User> listResult = userRepository.findAll();

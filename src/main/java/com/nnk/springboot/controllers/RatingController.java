@@ -59,8 +59,6 @@ public class RatingController {
     public String showUpdateRatingForm(@PathVariable("id") Integer id, Model model) {
         //check that an id exists
         Rating rating = ratingService.find(id);
-        if (rating == null)
-            throw new IllegalArgumentException("Invalid rating Id:" + id);
         model.addAttribute("rating", rating);
         return "rating/update";
     }
@@ -87,9 +85,6 @@ public class RatingController {
      */
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id) {
-        Rating rating = ratingService.find(id);
-        if (rating == null)
-            throw new IllegalArgumentException("Invalid bid Id:" + id);
         ratingService.delete(id);
         return "redirect:/rating/list";
     }

@@ -1,9 +1,8 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.User;
-import com.nnk.springboot.repositories.UserRepository;
+import com.nnk.springboot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,24 +15,24 @@ import javax.validation.Valid;
  */
 @Controller
 public class UserController {
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
-    UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    UserController(UserService userService) {
+        this.userService = userService;
     }
 
     /**
-     * Read the list of all bid
+     * Read the list of all User
      */
     @RequestMapping("/user/list")
     public String showUserList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.list());
         return "user/list";
     }
 
     /**
-     * Show the add Bid form
+     * Show the add User form
      */
     @GetMapping("/user/add")
     public String showAddUserForm(@ModelAttribute User bid) {
@@ -41,35 +40,32 @@ public class UserController {
     }
 
     /**
-     * Add a new Bid to DB
+     * Add a new User to DB
      */
-    @PostMapping("/user/validate")
+    @PostMapping("/user/add")
     public String submitAddUserForm(@Valid User user, BindingResult result, Model model) {
         //check model validation
         if (!result.hasErrors()) {
-            //encode password
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
-            userRepository.save(user);
-            model.addAttribute("users", userRepository.findAll());
+            userService.save(user);
+            model.addAttribute("users", userService.list());
             return "redirect:/user/list";
         }
         return "user/add";
     }
 
     /**
-     * Show the form for updating an existing Bid
+     * Show the form for updating an existing User
      */
     @GetMapping("/user/update/{id}")
     public String showUpdateUserForm(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        User user = userService.find(id);
         user.setPassword("");
         model.addAttribute("user", user);
         return "user/update";
     }
 
     /**
-     * Update an existing Bid
+     * Update an existing User
      */
     @PostMapping("/user/update/{id}")
     public String submitUpdateUserForm(
@@ -81,24 +77,18 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/update";
         }
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        userRepository.save(user);
-        model.addAttribute("users", userRepository.findAll());
+        userService.save(user);
+        model.addAttribute("users", userService.list());
         return "redirect:/user/list";
     }
 
     /**
-     * Delete an existing Bid
+     * Delete an existing User
      */
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") Integer id, Model model) {
-        // check that an element exists otherwise return an exception
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        userRepository.delete(user);
-        model.addAttribute("users", userRepository.findAll());
+        userService.delete(id);
+        model.addAttribute("users", userService.list());
         return "redirect:/user/list";
     }
 }

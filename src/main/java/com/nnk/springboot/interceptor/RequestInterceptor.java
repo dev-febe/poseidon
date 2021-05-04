@@ -11,11 +11,7 @@ import java.io.IOException;
 @Component
 public class RequestInterceptor implements Filter {
 
-    private final Logger LOGGER = LogManager.getLogger(RequestInterceptor.class);
-
-    @Override
-    public void init(FilterConfig filterConfig) {
-    }
+    Logger LOGGER = LogManager.getLogger(RequestInterceptor.class);
 
     @Override
     public void doFilter(ServletRequest request,
@@ -28,10 +24,5 @@ public class RequestInterceptor implements Filter {
         } finally {
             LOGGER.info("Response -> path: " + req.getRequestURI() + ", method: " + req.getMethod() + ", body " + req.getQueryString());
         }
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }

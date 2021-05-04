@@ -42,7 +42,7 @@ public class RuleNameController {
     /**
      * Add a new RuleName to DB
      */
-    @PostMapping("/ruleName/validate")
+    @PostMapping("/ruleName/add")
     public String submitAddRuleForm(@Valid RuleName ruleName, BindingResult result) {
         //check model validation
         if (!result.hasErrors()) {
@@ -59,8 +59,6 @@ public class RuleNameController {
     public String showUpdateRuleForm(@PathVariable("id") Integer id, Model model) {
         //check that an id exists
         RuleName ruleName = ruleNameService.find(id);
-        if (ruleName == null)
-            throw new IllegalArgumentException("Invalid rating Id:" + id);
         model.addAttribute("ruleName", ruleName);
         return "ruleName/update";
     }
@@ -87,9 +85,6 @@ public class RuleNameController {
      */
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRule(@PathVariable("id") Integer id) {
-        RuleName ruleName = ruleNameService.find(id);
-        if (ruleName == null)
-            throw new IllegalArgumentException("Invalid bid Id:" + id);
         ruleNameService.delete(id);
         return "redirect:/ruleName/list";
     }

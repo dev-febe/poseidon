@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,7 @@ import javax.validation.constraints.Min;
 import java.util.Date;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "curvepoint")

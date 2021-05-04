@@ -3,7 +3,7 @@ package com.nnk.springboot.integrations;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.services.CurveService;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,20 +24,19 @@ public class CurvePointTests {
 
         // Save
         curvePoint = curveService.save(curvePoint);
-        Assert.assertNotNull(curvePoint.getId());
-        Assert.assertTrue(curvePoint.getCurveId() == 10);
+        Assert.assertEquals(10, curvePoint.getCurveId());
 
         // Update
         curvePoint.setCurveId(20);
         curvePoint = curveService.save(curvePoint);
-        Assert.assertTrue(curvePoint.getCurveId() == 20);
+        Assert.assertEquals(20, curvePoint.getCurveId());
 
         // Find
         List<CurvePoint> listResult = curveService.list();
         Assert.assertTrue(listResult.size() > 0);
 
         // Delete
-        Integer id = curvePoint.getId();
+        int id = curvePoint.getId();
         curveService.delete(id);
         CurvePoint curvePointList = curveService.find(id);
         Assert.assertNull(curvePointList);

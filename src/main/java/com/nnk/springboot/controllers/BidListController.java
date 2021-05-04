@@ -60,8 +60,6 @@ public class BidListController {
     public String showUpdateBidForm(@PathVariable("id") Integer id, Model model) {
         //check that id exists
         BidList bid = bidListService.find(id);
-        if (bid == null)
-            throw new IllegalArgumentException("Invalid bid Id:" + id);
         model.addAttribute("bidList", bid);
         return "bidList/update";
     }
@@ -88,9 +86,6 @@ public class BidListController {
      */
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id) {
-        BidList bid = bidListService.find(id);
-        if (bid == null)
-            throw new IllegalArgumentException("Invalid bid Id:" + id);
         bidListService.delete(id);
         return "redirect:/bidList/list";
     }

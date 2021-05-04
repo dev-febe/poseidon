@@ -1,7 +1,7 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.domain.Rating;
-import com.nnk.springboot.services.RatingService;
+import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.services.RuleNameService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -18,50 +18,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(RatingController.class)
+@WebMvcTest(RuleNameController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class RatingControllerTest {
+public class RuleNameControllerTest {
     @MockBean
-    RatingService service;
+    RuleNameService service;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void testShow() throws Exception {
-        mockMvc.perform(get("/rating/list"))
+        mockMvc.perform(get("/ruleName/list"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testShowAddForm() throws Exception {
-        mockMvc.perform(get("/rating/add"))
+        mockMvc.perform(get("/ruleName/add"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testSubmitAddForm() throws Exception {
-        mockMvc.perform(post("/rating/add"))
+        mockMvc.perform(post("/ruleName/add"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testShowUpdateForm() throws Exception {
-        Mockito.when(service.find(1)).thenReturn(new Rating());
-        mockMvc.perform(get("/rating/update/1"))
+        Mockito.when(service.find(1)).thenReturn(new RuleName());
+        mockMvc.perform(get("/ruleName/update/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testSubmitUpdateForm() throws Exception {
-        mockMvc.perform(post("/rating/update/1"))
+        mockMvc.perform(post("/ruleName/update/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testDelete() throws Exception {
-        Mockito.when(service.find(1)).thenReturn(new Rating());
-        mockMvc.perform(get("/rating/delete/1"))
+        Mockito.when(service.find(1)).thenReturn(new RuleName());
+        mockMvc.perform(get("/ruleName/delete/1"))
                 .andExpect(status().is3xxRedirection());
     }
 }

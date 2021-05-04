@@ -42,7 +42,7 @@ public class CurveController {
     /**
      * Add a new CurvePoint to DB
      */
-    @PostMapping("/curvePoint/validate")
+    @PostMapping("/curvePoint/add")
     public String submitAddCurvePointForm(@Valid CurvePoint curvePoint, BindingResult result) {
         //check model validation
         if (!result.hasErrors()) {
@@ -59,8 +59,6 @@ public class CurveController {
     public String showUpdateCurvePointForm(@PathVariable("id") Integer id, Model model) {
         //check that an id exists
         CurvePoint curvePoint = curveService.find(id);
-        if (curvePoint == null)
-            throw new IllegalArgumentException("Invalid curvePoint Id:" + id);
         model.addAttribute("curvePoint", curvePoint);
 
         return "curvePoint/update";
@@ -88,9 +86,6 @@ public class CurveController {
      */
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteCurvePoint(@PathVariable("id") Integer id) {
-        CurvePoint curvePoint = curveService.find(id);
-        if (curvePoint == null)
-            throw new IllegalArgumentException("Invalid bid Id:" + id);
         curveService.delete(id);
         return "redirect:/curvePoint/list";
     }

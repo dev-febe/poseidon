@@ -3,7 +3,7 @@ package com.nnk.springboot.integrations;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.services.RuleNameService;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,20 +24,19 @@ public class RuleTests {
 
         // Save
         rule = ruleNameService.save(rule);
-        Assert.assertNotNull(rule.getId());
-        Assert.assertTrue(rule.getName().equals("Rule Name"));
+        Assert.assertEquals("Rule Name", rule.getName());
 
         // Update
         rule.setName("Rule Name Update");
         rule = ruleNameService.save(rule);
-        Assert.assertTrue(rule.getName().equals("Rule Name Update"));
+        Assert.assertEquals("Rule Name Update", rule.getName());
 
         // Find
         List<RuleName> listResult = ruleNameService.list();
         Assert.assertTrue(listResult.size() > 0);
 
         // Delete
-        Integer id = rule.getId();
+        int id = rule.getId();
         ruleNameService.delete(id);
         RuleName ruleList = ruleNameService.find(id);
         Assert.assertNull(ruleList);
